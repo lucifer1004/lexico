@@ -11,6 +11,7 @@ const App = () => {
       <Router>
         <Search path="/" />
         <Editor path="/edit" />
+        <Editor path="/edit/:word" />
       </Router>
     </Layout>
   )

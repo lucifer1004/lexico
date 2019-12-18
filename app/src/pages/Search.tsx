@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {css} from 'emotion'
 import {SearchBox, ISearchBoxStyles} from 'office-ui-fabric-react/lib/SearchBox'
-import {PrimaryButton} from 'office-ui-fabric-react'
+import {PrimaryButton} from 'office-ui-fabric-react/lib/Button'
 import {Link} from '@reach/router'
 import {useDebounce} from 'use-debounce'
 

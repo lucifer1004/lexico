@@ -9,6 +9,6 @@ defmodule Api.Repo.Migrations.CreateItems do
       timestamps()
     end
 
-    create(unique_index(:items, [:word]))
+    create(unique_index(:items, [:word], name: :items_word_index))
   end
 end

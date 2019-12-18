@@ -35,23 +35,34 @@ defmodule Api.Content do
   end
 
   def create_item(args) do
-    Repo.insert(%Item{word: args.word, description: args.description})
+    Item.changeset(%Item{}, %{word: args.word, description: args.description})
+    |> Repo.insert()
   end
 
   def update_item(args) do
-    item = Repo.get_by!(Item, word: args.word)
+    item = Repo.get_by(Item, word: args.word)
 
-    changeset =
-      Ecto.Changeset.change(item,
-        description: args.description,
-        updated_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
-      )
+    case item do
+      nil ->
+        {:error, "\"#{args.word}\" cannot be found in the dictionary."}
 
-    Repo.update(changeset)
+      _ ->
+        changeset =
+          Ecto.Changeset.change(item,
+            description: args.description,
+            updated_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+          )
+
+        Repo.update(changeset)
+    end
   end
 
   def delete_item(args) do
-    item = Repo.get_by!(Item, word: args.word)
-    Repo.delete(item)
+    item = Repo.get_by(Item, word: args.word)
+
+    case item do
+      nil -> {:error, "\"#{args.word}\" cannot be found in the dictionary."}
+      _ -> Repo.delete(item)
+    end
   end
 end

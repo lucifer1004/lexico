@@ -8,7 +8,16 @@ defmodule ApiWeb.Resolvers.Content do
   end
 
   def create_item(_parent, args, _resolution) do
-    Api.Content.create_item(args)
+    result = Api.Content.create_item(args)
+
+    case result do
+      {:ok, _} ->
+        result
+
+      {:error, changeset} ->
+        message = changeset.errors[:word] |> Tuple.to_list() |> List.first()
+        {:error, message}
+    end
   end
 
   def update_item(_parent, args, _resolution) do
