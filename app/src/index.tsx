@@ -6,6 +6,7 @@ import {initializeIcons} from 'office-ui-fabric-react/lib/Icons'
 
 import './index.css'
 import App from './App'
+import {MessageProvider} from './contexts/MessageContext'
 import * as serviceWorker from './serviceWorker'
 
 const client = new ApolloClient({
@@ -16,7 +17,9 @@ initializeIcons(/* optional base url */)
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <MessageProvider>
+      <App />
+    </MessageProvider>
   </ApolloProvider>,
   document.getElementById('root'),
 )
