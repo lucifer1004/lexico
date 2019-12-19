@@ -10,7 +10,14 @@ defmodule Api.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -43,7 +50,8 @@ defmodule Api.MixProject do
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_ecto, "~> 4.1.0"},
       {:plug_cowboy, "~> 2.1.0"},
-      {:postgrex, "~> 0.15.3"}
+      {:postgrex, "~> 0.15.3"},
+      {:excoveralls, "~> 0.10", only: :test}
     ]
   end
 
