@@ -52,7 +52,7 @@ defmodule Api.MixProject do
       {:phoenix_ecto, "~> 4.1.0"},
       {:plug_cowboy, "~> 2.1.0"},
       {:postgrex, "~> 0.15.3"},
-      {:excoveralls, "~> 0.10", only: :test}
+      {:excoveralls, "~> 0.12", only: :test}
     ]
   end
 
