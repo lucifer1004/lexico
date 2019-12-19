@@ -8,12 +8,10 @@ defmodule Api.Content do
         where: ilike(item.word, ^"%#{args.word}%")
       )
 
-    Repo.aggregate(query, :count, :id)
+    {:ok, Repo.aggregate(query, :count, :id)}
   end
 
   def get_all_items(args) do
-    IO.inspect(args)
-
     order =
       if args.desc do
         [desc: :inserted_at]
@@ -31,12 +29,21 @@ defmodule Api.Content do
         where: ilike(item.word, ^"%#{args.word}%")
       )
 
-    Repo.all(query)
+    {:ok, Repo.all(query)}
   end
 
   def create_item(args) do
-    Item.changeset(%Item{}, %{word: args.word, description: args.description})
-    |> Repo.insert()
+    result =
+      Item.changeset(%Item{}, %{word: args.word, description: args.description})
+      |> Repo.insert()
+
+    case result do
+      {:ok, _} ->
+        result
+
+      {:error, changeset} ->
+        handle_changeset_error(changeset)
+    end
   end
 
   def update_item(args) do
@@ -47,13 +54,23 @@ defmodule Api.Content do
         {:error, "\"#{args.word}\" cannot be found in the dictionary."}
 
       _ ->
-        changeset =
-          Ecto.Changeset.change(item,
-            description: args.description,
-            updated_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+        result =
+          Item.changeset(
+            item,
+            %{
+              description: args.description,
+              updated_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+            }
           )
+          |> Repo.update()
 
-        Repo.update(changeset)
+        case result do
+          {:ok, _} ->
+            result
+
+          {:error, changeset} ->
+            handle_changeset_error(changeset)
+        end
     end
   end
 
@@ -64,5 +81,18 @@ defmodule Api.Content do
       nil -> {:error, "\"#{args.word}\" cannot be found in the dictionary."}
       _ -> Repo.delete(item)
     end
+  end
+
+  defp handle_changeset_error(changeset) do
+    word = changeset.errors[:word]
+
+    message =
+      if word != nil do
+        word |> Tuple.to_list() |> List.first()
+      else
+        changeset.errors[:description] |> Tuple.to_list() |> List.first()
+      end
+
+    {:error, message}
   end
 end

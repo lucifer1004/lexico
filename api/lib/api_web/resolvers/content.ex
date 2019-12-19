@@ -1,23 +1,14 @@
 defmodule ApiWeb.Resolvers.Content do
   def get_all_items(_parent, args, _resolution) do
-    {:ok, Api.Content.get_all_items(args)}
+    Api.Content.get_all_items(args)
   end
 
   def get_item_count(_parent, args, _resolution) do
-    {:ok, Api.Content.get_item_count(args)}
+    Api.Content.get_item_count(args)
   end
 
   def create_item(_parent, args, _resolution) do
-    result = Api.Content.create_item(args)
-
-    case result do
-      {:ok, _} ->
-        result
-
-      {:error, changeset} ->
-        message = changeset.errors[:word] |> Tuple.to_list() |> List.first()
-        {:error, message}
-    end
+    Api.Content.create_item(args)
   end
 
   def update_item(_parent, args, _resolution) do

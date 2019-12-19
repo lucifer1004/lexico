@@ -2,9 +2,9 @@ use Mix.Config
 
 # Configure your database
 config :api, Api.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "api_test",
+  username: "ubuntu",
+  password: "",
+  database: "my_dict_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
