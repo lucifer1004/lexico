@@ -1,17 +1,20 @@
-name: Example workflow for Codecov
+name: Frontend CI
 
 on: push
 
 jobs:
   test-frontend:
     runs-on: ubuntu-latest
-    name: Frontend Test
+    name: Frontend CI (Node ${{matrix.node}})
+    strategy:
+      matrix:
+        node: ["12.x", "10.x"]
     steps:
       - uses: actions/checkout@v1
       - name: Setup NodeJS environment
         uses: actions/setup-node@v1
         with:
-          node-version: "12.x"
+          node-version: ${{matrix.node}}
       - run: cd app && yarn install
       - run: cd app && CI=true yarn test --coverage
       - name: Upload coverage to Codecov
