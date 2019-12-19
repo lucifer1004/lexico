@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {Router} from '@reach/router'
 
 import Layout from './layouts/Layout'

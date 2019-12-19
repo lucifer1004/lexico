@@ -9,7 +9,7 @@ export const handleApolloError = (dispatch: React.Dispatch<IMessageAction>) => (
   dispatch({
     type: MessageAction.SET,
     message:
-      error.graphQLErrors.length > 0
+      error.graphQLErrors && error.graphQLErrors.length > 0
         ? error.graphQLErrors[0].message
         : error.networkError
         ? 'Network error.'
