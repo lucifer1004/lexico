@@ -3,13 +3,13 @@ name: Elixir CI
 on: push
 
 jobs:
-  test:
+  test-backend:
     runs-on: ubuntu-latest
-    name: OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
+    name: Backend Test (OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}})
     strategy:
       matrix:
         otp: [22.1.8]
-        elixir: [1.9.4]
+        elixir: [1.9.4, 1.8.2]
     env:
       MIX_ENV: test
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -21,11 +21,12 @@ jobs:
           POSTGRES_PASSWORD: ""
           POSTGRES_DB: my_dict_test
         ports:
-        - 5432:5432
+          - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v1.0.0
-      - uses: actions/setup-elixir@v1.0.0
+      - name: Setup Elixir environment
+        uses: actions/setup-elixir@v1.0.0
         with:
           otp-version: ${{matrix.otp}}
           elixir-version: ${{matrix.elixir}}

@@ -1,0 +1,24 @@
+name: Example workflow for Codecov
+
+on: push
+
+jobs:
+  test-frontend:
+    runs-on: ubuntu-latest
+    name: Frontend Test
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup NodeJS environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - run: cd app && yarn install
+      - run: cd app && CI=true yarn test --coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./app/coverage/coverage-final.json
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
