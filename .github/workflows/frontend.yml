@@ -23,5 +23,4 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./app/coverage/coverage-final.json
           flags: unittests
-          name: codecov-umbrella
           fail_ci_if_error: true
