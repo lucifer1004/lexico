@@ -56,6 +56,6 @@
     "lint-staged": "9.5.0",
     "prettier": "1.19.1",
     "react-scripts": "3.3.0",
-    "typescript": "3.7.3"
+    "typescript": "3.9.10"
   }
 }
